@@ -5,7 +5,7 @@ const impuestos = [
 ]
 //creo la lista de impuestos que se podran calcular
 //funcion para calcular los impuestos
-function calcularImpuesto(totalCompra, impuestosId){
+function calcularImpuesto(totalCompra, impuestoId){
     const impuesto = impuestos.find(imp => imp.id === impuestoId)
     if (!impuesto){
         return null //impuesto no encontrado
@@ -18,18 +18,8 @@ const totalCompraUsuario = prompt("Ingresa el subtotal de la compra en ARS:")
 const totalCompraNumeros = parseFloat(totalCompraUsuario)
 // se verifica si el usuario ingreso un numero valido
 if (!isNaN(totalCompraUsuario)){
-    // muestra los distintos impuestos disponibles
-    console.log(`Tipos de impuestos disponibles:`)
-    impuestos.forEach(impuesto => {
-        console.log(`${impuesto.id}: ${impuesto.nombre}`)
-    })
-
-    console.log(`Total de la compra: ${totalCompraNumeros}`)
-    impuestosCalculados.forEach(impuesto => {
-        console.log(`${impuesto.nombre} : ${impuesto.monto}`)
-    })
     //se solicita elegir un impuesto al usuario
-    const impuestoElegido = parseInt(prompt(`Elige el impuesto a calcular:`))
+    const impuestoElegido = parseInt(prompt(`Elige el impuesto a calcular: \n1 - Impuesto a Steam 75%\n2 - Impuesto a la importación 95%\n3 - Impuesto a las ganancias 35%`))
 
     //calcula el impuesto elegido
     const impuestoCalculado = calcularImpuesto(totalCompraNumeros, impuestoElegido)
