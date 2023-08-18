@@ -1,33 +1,49 @@
 const impuestos = [
-    {nombre:"Percepción de Ganancias y Bienes Personales", tasa: 0.45},
-    {nombre: "Impuesto PAIS", tasa: 0.3}
-    //aqui se pueden agregar mas impuestos que el gobierno apruebe ;)
+    {id: 1, nombre:`Impuesto a Steam`, tasa: 0.75},
+    {id: 2, nombre: `Impuesto a la importación`, tasa: 0.95},
+    {id: 3, nombre:`Impuesto a las ganancias`, tasa: 0.35}
 ]
-//funcion para calcular los impuestos de una compra en Steam
-function calcularImpuestos(totalCompra){
-    const impuestosDetallados = impuestos.map(impuesto => ({
-        nombre: impuesto.nombre,
-        monto: totalCompra * impuesto.tasa
-    }))
-    return impuestosDetallados
-}
+//creo la lista de impuestos que se podran calcular
+//funcion para calcular los impuestos
+function calcularImpuesto(totalCompra, impuestosId){
+    const impuesto = impuestos.find(imp => imp.id === impuestoId)
+    if (!impuesto){
+        return null //impuesto no encontrado
+    }
+    return {nombre: impuesto.nombre, monto: totalCompra * impuesto.tasa}
+}  
 //Se solicita el monto a calcular al usuario
 const totalCompraUsuario = prompt("Ingresa el subtotal de la compra en ARS:")
 //convierte la entrada de datos en un numero
 const totalCompraNumeros = parseFloat(totalCompraUsuario)
 // se verifica si el usuario ingreso un numero valido
 if (!isNaN(totalCompraUsuario)){
-    // se calculan los impuestos a pagar
-    const impuestosCalculados = calcularImpuestos(totalCompraNumeros)
-    // se calcula el total a pagar
-    const totalAPagar = totalCompraNumeros + impuestosCalculados.reduce((total, impuesto) => total + impuesto.monto, 0)
+    // muestra los distintos impuestos disponibles
+    console.log(`Tipos de impuestos disponibles:`)
+    impuestos.forEach(impuesto => {
+        console.log(`${impuesto.id}: ${impuesto.nombre}`)
+    })
 
     console.log(`Total de la compra: ${totalCompraNumeros}`)
     impuestosCalculados.forEach(impuesto => {
         console.log(`${impuesto.nombre} : ${impuesto.monto}`)
     })
-    console.log(`Total a pagar con impuestos: ${totalAPagar}`)
-} else{
-    console.log("Cantidad invalida. Intentelo nuevamente mas tarde.")
+    //se solicita elegir un impuesto al usuario
+    const impuestoElegido = parseInt(prompt(`Elige el impuesto a calcular:`))
+
+    //calcula el impuesto elegido
+    const impuestoCalculado = calcularImpuesto(totalCompraNumeros, impuestoElegido)
+
+    if(impuestoCalculado){
+        const totalAPagar = totalCompraNumeros + impuestoCalculado.monto
+
+        console.log(`Total de la compra: $${totalCompraNumeros}`)
+        console.log(`${impuestoCalculado.nombre}: $${impuestoCalculado.monto}`)
+        console.log(`Total a pagar con impuestos: $${totalAPagar}`)
+    }else{
+        console.log(`Impuesto invalido. Por favor elegí un impuesto valido.`)
+    }
+}else{
+    console.log(`Cantidad invalida . Por favor intentelo de nuevo.`)
 }
 
